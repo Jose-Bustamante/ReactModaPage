@@ -17,38 +17,39 @@ import compose from 'recompose/compose';
 import branch from 'recompose/branch';
 import lifecycle from 'recompose/lifecycle';
 import { createStructuredSelector } from 'reselect';
-import AppBar from 'material-ui/AppBar';
+import Carousel from '../../components/Carousel';
 import Wrapper from './Wrapper';
 import { makeSelectSocial, makeSelectLoading } from './selectors';
 import { loadData } from './actions';
-import VideoBlock from '../../components/VideoBlock';
-import ImageBlock from '../../components/ImageBlock';
-import TweetBlock from '../../components/TweetBlock';
-
+import ImageDiv from '../../components/ImageDiv';
+import P from '../../components/P';
+import Header from '../../components/Header';
+import OwnCarousel from '../../components/OwnCarousel';
 
 class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  renderBlocks = (data, key) => {
-    if (data.type === 'image') {
-      return <ImageBlock source={data.src} key={key} />;
-    }
-    if (data.type === 'video') {
-      return <VideoBlock source={data.src} key={key} />;
-    }
-    if (data.type === 'tweet') {
-      return <TweetBlock post={data.post} profile={data.profile} date={data.date} key={key} />;
-    }
-    return null;
-  };
+  constructor(props) {
+    super(props);
+    this.state = { number: 0 };
+    this.test = this.test.bind(this);
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.test);
+    this.test();
+  }
+  test() {
+    this.setState({ number: Math.floor(window.innerWidth / 260) });
+  }
   render() {
-    const { socials } = this.props;
-    const blocks = socials.map(this.renderBlocks);
     return (
       <Wrapper>
-        <AppBar
-          title="Social"
-          showMenuIconButton={false}
-        />
-        {blocks}
+        <ImageDiv />
+        <P>
+          {'The xx is een driekoppige Engelse indieband, gevormd in Wandsworth, Londen in 2005. De drie brachten hun debuutalbum, xx, uit in augustus 2009. Het kwam op de eerste plaats van de "best of 2009"-lijst van The Guardian en op de tweede op die van NME.'}
+        </P>
+        <Header>
+          {'Upcoming Artists'}
+        </Header>
+        <OwnCarousel />
       </Wrapper>
     );
   }
